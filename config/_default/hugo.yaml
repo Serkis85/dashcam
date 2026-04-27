@@ -30,12 +30,15 @@ languages:
     languageDirection: ltr
     languageName: English
     weight: 1
-  el:
+  ru:
     disabled: false
-    languageCode: el-GR
+    languageCode: ru-RU
     languageDirection: ltr
-    languageName: Greek
+    languageName: Russian
     weight: 2
+    title: 'Плагин и видеорегистратор, который идеально подходит для вашего автомобиля'
+    params:
+      description: 'Получите персональное предложение по видеорегистратору для вашего автомобиля. Заполните данные, и мы подберём лучшее решение.'
 
 outputFormats:
   llms:

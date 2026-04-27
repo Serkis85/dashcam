@@ -1,8 +1,35 @@
-# Note: pluralization keys like "description" or "one" will convert your object into plural translation and other keys will stop working.
-# Don't use those keys unless you are working on pluralization of a string.
 menu:
   homepage: Homepage
-  about: About us
 
-aboutUs:
-  introduction: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+form:
+  heroTitle: 'Finally, a <span class="text-blue-400">Plug & Play</span><br />Dash Camera That Fits<br />Your Car Perfectly'
+  title: Plug & Play Dash Cam that fits your car perfectly
+  tagline: Tell us about your car and we'll match you with a dash cam that fits perfectly—seamless, plug & play, and made for your mirror.
+  subtitle: Exclusive Offer
+  firstName: First Name
+  lastName: Last Name
+  email: Email
+  phone: Phone
+  personalDetails: Personal Details
+  carSpecifications: Car Specifications
+  car_brand: Car Brand
+  car_model: Car Model
+  car_year: Car Year
+  camera_placement: Camera Placement
+  cameraPlacementFront: Front
+  cameraPlacementFrontRear: Front & Rear
+  cameraPlacementDesc: Please select your preferred camera setup for your vehicle. Choose <b>Front</b> for a single front-facing camera, or <b>Front & Rear</b> for both front and rear coverage.
+  consent: I agree to receive offers and updates.
+  submit: Get My Dashcam Offer
+  successTitle: Thank you!
+  successMessage: Your details have been submitted. We'll be in touch with a personalised dashcam offer shortly.
+  footerNote: Your information is kept private and will only be used to send you relevant offers.
+  required: Required
+  selectYear: Select year
+  selectBrand: Search car brand…
+  selectModel: Search model…
+  selectModelFirst: Select a brand first
+  otherManual: Enter your car brand
+  otherManualModel: Enter your car model
+  submitting: Submitting…
+  errorSubmitting: There was an error submitting your form. Please try again.

@@ -5,7 +5,6 @@
 ## Key pages
 
 - [Home]({{ .Site.BaseURL }})
-- [About]({{ absLangURL "about" }})
 
 ## Contact
 

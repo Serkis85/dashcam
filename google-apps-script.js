@@ -36,6 +36,7 @@ var HEADERS = [
   'Car Year',
   'Camera Placement',
   'Consent',
+  'Language',
 ];
 
 // ─── Main POST handler ────────────────────────────────────────────────────────
@@ -71,6 +72,7 @@ function doPost(e) {
       data.carYear || '',
       data.cameraPlacement || '',
       data.consent || '',
+      data.language || 'en',
     ]);
 
     sheet.autoResizeColumns(1, HEADERS.length);

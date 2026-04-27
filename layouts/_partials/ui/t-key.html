@@ -1,0 +1,5 @@
+{{- with .Context -}}
+  {{- replace (T $.Key .) "\\n" "\n" | safeHTML -}}
+{{- else -}}
+  {{- replace (T .Key) "\\n" "\n" | safeHTML -}}
+{{- end -}}

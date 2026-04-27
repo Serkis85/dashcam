@@ -1,4 +1,10 @@
 {{ define "body" }}
+  {{/* ── i18n placeholder variables ──────────────────────────────────────── */}}
+  {{- $phSelectBrand := partial "ui/t-key" (dict "Key" "form.selectBrand") -}}
+  {{- $phSelectModel := partial "ui/t-key" (dict "Key" "form.selectModel") -}}
+  {{- $phSelectFirst := partial "ui/t-key" (dict "Key" "form.selectModelFirst") -}}
+  {{- $phOtherBrand  := partial "ui/t-key" (dict "Key" "form.otherManual") -}}
+  {{- $phOtherModel  := partial "ui/t-key" (dict "Key" "form.otherManualModel") -}}
   {{/* ── Inline styles for the combobox dropdown ─────────────────────────── */}}
   <style>
     [x-cloak] {
@@ -57,16 +63,13 @@
         {{/* ── Campaign header ───────────────────────────────────────────── */}}
         <div class="text-center mb-8">
           <p class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-3">
-            Exclusive Offer
+            {{ partial "ui/t-key" (dict "Key" "form.subtitle") }}
           </p>
           <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-3">
-            Finally, a <span class="text-blue-400">Plug & Play</span><br />
-            Dash Camera That Fits<br />
-            Your Car Perfectly
+            {{ partial "ui/t-key" (dict "Key" "form.heroTitle") }}
           </h1>
           <p class="text-slate-300 text-sm sm:text-base max-w-sm mx-auto">
-            Tell us about your car and we’ll match you with a dash cam that fits perfectly, seamless,
-            plug & play, and made for your mirror.
+            {{ partial "ui/t-key" (dict "Key" "form.tagline") }}
           </p>
         </div>
 
@@ -91,10 +94,11 @@
                 />
               </svg>
             </div>
-            <h2 class="text-xl font-bold text-slate-800 mb-2">Thank you!</h2>
+            <h2 class="text-xl font-bold text-slate-800 mb-2">
+              {{ partial "ui/t-key" (dict "Key" "form.successTitle") }}
+            </h2>
             <p class="text-slate-600 text-sm">
-              Your details have been submitted. We'll be in touch with a personalised dashcam offer
-              shortly.
+              {{ partial "ui/t-key" (dict "Key" "form.successMessage") }}
             </p>
           </div>
 
@@ -109,13 +113,20 @@
 
           {{/* ── Main form ─────────────────────────────────────────────── */}}
           <form @submit.prevent="submitForm" x-show="!submitted" class="p-6 sm:p-8 space-y-6">
+            <!-- Hidden language field -->
+            <input
+              type="hidden"
+              x-model="formData.language"
+              :value="siteLanguage"
+              name="language"
+            />
             {{/* ── Section: Personal Details ─────────────────────────── */}}
             <div>
               <h2
                 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2"
               >
                 <span class="flex-1 h-px bg-slate-200"></span>
-                Personal Details
+                {{ partial "ui/t-key" (dict "Key" "form.personalDetails") }}
                 <span class="flex-1 h-px bg-slate-200"></span>
               </h2>
 
@@ -123,7 +134,8 @@
                 {{/* First Name */}}
                 <div :data-error="isInvalid('firstName') ? 'true' : 'false'">
                   <label for="firstName" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    First Name <span class="text-red-500">*</span>
+                    {{ partial "ui/t-key" (dict "Key" "form.firstName") }}
+                    <span class="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -131,7 +143,7 @@
                     x-model="formData.firstName"
                     @blur="touch('firstName')"
                     autocomplete="given-name"
-                    placeholder="e.g. John"
+                    :placeholder="'e.g. John'"
                     :class="isInvalid('firstName')
                       ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
                       : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
@@ -148,7 +160,8 @@
                 {{/* Last Name */}}
                 <div :data-error="isInvalid('lastName') ? 'true' : 'false'">
                   <label for="lastName" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Last Name <span class="text-red-500">*</span>
+                    {{ partial "ui/t-key" (dict "Key" "form.lastName") }}
+                    <span class="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -156,7 +169,7 @@
                     x-model="formData.lastName"
                     @blur="touch('lastName')"
                     autocomplete="family-name"
-                    placeholder="e.g. Smith"
+                    :placeholder="'e.g. Smith'"
                     :class="isInvalid('lastName')
                       ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
                       : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
@@ -175,7 +188,8 @@
                 {{/* Email */}}
                 <div :data-error="isInvalid('email') ? 'true' : 'false'">
                   <label for="email" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Email <span class="text-red-500">*</span>
+                    {{ partial "ui/t-key" (dict "Key" "form.email") }}
+                    <span class="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
@@ -200,7 +214,7 @@
                 {{/* Phone (optional) */}}
                 <div :data-error="isInvalid('phone') ? 'true' : 'false'">
                   <label for="phone" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Phone
+                    {{ partial "ui/t-key" (dict "Key" "form.phone") }}
                     <span class="text-slate-400 font-normal">(optional)</span>
                   </label>
                   <input
@@ -231,7 +245,7 @@
                 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2"
               >
                 <span class="flex-1 h-px bg-slate-200"></span>
-                Car Specifications
+                {{ partial "ui/t-key" (dict "Key" "form.carSpecifications") }}
                 <span class="flex-1 h-px bg-slate-200"></span>
               </h2>
 
@@ -244,7 +258,8 @@
                   @keydown.escape="brandOpen = false"
                 >
                   <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Car Brand <span class="text-red-500">*</span>
+                    {{ partial "ui/t-key" (dict "Key" "form.car_brand") }}
+                    <span class="text-red-500">*</span>
                   </label>
 
                   <div class="relative">
@@ -254,7 +269,7 @@
                       @focus="brandOpen = true"
                       @input="brandOpen = true; if(formData.carBrand && brandQuery !== formData.carBrand) { formData.carBrand = ''; formData.carModel = ''; modelQuery = ''; }"
                       @blur="$nextTick(() => { if (!formData.carBrand) brandQuery = ''; brandOpen = false; })"
-                      placeholder="Search car brand…"
+                      placeholder="{{ $phSelectBrand }}"
                       autocomplete="off"
                       :class="isInvalid('carBrand')
                         ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
@@ -327,7 +342,7 @@
                       type="text"
                       x-model="formData.customBrand"
                       @input="touch('carBrand')"
-                      placeholder="Enter your car brand"
+                      placeholder="{{ $phOtherBrand }}"
                       class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                     />
                   </div>
@@ -341,7 +356,8 @@
                   @keydown.escape="modelOpen = false"
                 >
                   <label class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Car Model <span class="text-red-500">*</span>
+                    {{ partial "ui/t-key" (dict "Key" "form.car_model") }}
+                    <span class="text-red-500">*</span>
                   </label>
 
                   {{/* Standard brand: searchable combobox */}}
@@ -353,7 +369,7 @@
                       @input="if(formData.carBrand && !isOtherBrand) { modelOpen = true; if(formData.carModel && modelQuery !== formData.carModel) formData.carModel = ''; }"
                       @blur="$nextTick(() => { if (!formData.carModel) modelQuery = ''; modelOpen = false; })"
                       :disabled="!formData.carBrand || isOtherBrand"
-                      :placeholder="formData.carBrand ? 'Search model…' : 'Select a brand first'"
+                      :placeholder="formData.carBrand ? '{{ $phSelectModel }}' : '{{ $phSelectFirst }}'"
                       autocomplete="off"
                       :class="isInvalid('carModel')
                         ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
@@ -418,7 +434,7 @@
                         type="text"
                         x-model="formData.customModel"
                         @input="touch('carModel')"
-                        placeholder="Enter your car model"
+                        placeholder="{{ $phOtherModel }}"
                         class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                       />
                     </div>
@@ -430,7 +446,7 @@
                       type="text"
                       x-model="formData.customModel"
                       @input="touch('carModel')"
-                      placeholder="Enter your car model"
+                      placeholder="{{ $phOtherModel }}"
                       class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
                     />
                   </div>
@@ -446,7 +462,8 @@
                 {{/* ── Car Year ──────────────────────────────────────── */}}
                 <div :data-error="isInvalid('carYear') ? 'true' : 'false'">
                   <label for="carYear" class="block text-sm font-semibold text-slate-700 mb-1.5">
-                    Car Year <span class="text-red-500">*</span>
+                    {{ partial "ui/t-key" (dict "Key" "form.car_year") }}
+                    <span class="text-red-500">*</span>
                   </label>
                   <div class="relative">
                     <select
@@ -458,7 +475,9 @@
                         : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
                       class="w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:outline-none transition appearance-none bg-white pr-10 text-slate-900"
                     >
-                      <option value="" disabled selected>Select year</option>
+                      <option value="" disabled selected>
+                        {{ partial "ui/t-key" (dict "Key" "form.selectYear") }}
+                      </option>
                       <template x-for="year in carYears" :key="year">
                         <option :value="year" x-text="year"></option>
                       </template>
@@ -492,26 +511,33 @@
                 for="cameraPlacement"
                 class="block text-sm font-semibold text-slate-700 mb-1.5"
               >
-                Camera Placement <span class="text-red-500">*</span>
+                {{ partial "ui/t-key" (dict "Key" "form.camera_placement") }}
+                <span class="text-red-500">*</span>
               </label>
               <p class="text-xs text-slate-500 mb-3">
-                Please select your preferred camera setup for your vehicle. Choose <b>Front</b> for
-                a single front-facing camera, or <b>Front & Rear</b> for both front and rear
-                coverage.
+                {{ partial "ui/t-key" (dict "Key" "form.cameraPlacementDesc") }}
               </p>
               <div class="flex gap-4">
-                <template x-for="option in ['Front', 'Front & Rear']" :key="option">
-                  <button
-                    type="button"
-                    :class="formData.cameraPlacement === option
-                      ? 'bg-blue-600 text-white border-blue-600 shadow-lg'
-                      : 'bg-white text-slate-700 border-slate-300 hover:bg-blue-50'"
-                    class="flex-1 px-6 py-3 rounded-xl border-2 font-semibold text-base transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
-                    @click="formData.cameraPlacement = option; touch('cameraPlacement')"
-                  >
-                    <span x-text="option"></span>
-                  </button>
-                </template>
+                <button
+                  type="button"
+                  :class="formData.cameraPlacement === 'Front'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-lg'
+                    : 'bg-white text-slate-700 border-slate-300 hover:bg-blue-50'"
+                  class="flex-1 px-6 py-3 rounded-xl border-2 font-semibold text-base transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+                  @click="formData.cameraPlacement = 'Front'; touch('cameraPlacement')"
+                >
+                  {{ partial "ui/t-key" (dict "Key" "form.cameraPlacementFront") }}
+                </button>
+                <button
+                  type="button"
+                  :class="formData.cameraPlacement === 'Front & Rear'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-lg'
+                    : 'bg-white text-slate-700 border-slate-300 hover:bg-blue-50'"
+                  class="flex-1 px-6 py-3 rounded-xl border-2 font-semibold text-base transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400 cursor-pointer"
+                  @click="formData.cameraPlacement = 'Front & Rear'; touch('cameraPlacement')"
+                >
+                  {{ partial "ui/t-key" (dict "Key" "form.cameraPlacementFrontRear") }}
+                </button>
               </div>
               <p
                 x-show="isInvalid('cameraPlacement')"
@@ -534,7 +560,7 @@
                   class="mt-0.5 w-4 h-4 accent-blue-600 shrink-0"
                 />
                 <span class="text-sm text-slate-700 leading-snug">
-                  I agree to receive offers and updates.
+                  {{ partial "ui/t-key" (dict "Key" "form.consent") }}
                   <span class="text-red-500">*</span>
                 </span>
               </label>
@@ -562,7 +588,7 @@
                     d="M13 7l5 5m0 0l-5 5m5-5H6"
                   />
                 </svg>
-                Get My Dashcam Offer
+                {{ partial "ui/t-key" (dict "Key" "form.submit") }}
               </span>
               <span x-show="loading" x-cloak class="flex items-center justify-center gap-2">
                 <svg
@@ -578,7 +604,7 @@
                     d="M4 12a8 8 0 018-8v8H4z"
                   />
                 </svg>
-                Submitting…
+                {{ partial "ui/t-key" (dict "Key" "form.submitting") }}
               </span>
             </button>
           </form>
@@ -586,7 +612,7 @@
 
         {{/* Footer note */}}
         <p class="text-center text-xs text-slate-400 mt-6">
-          Your information is kept private and will only be used to send you relevant offers.
+          {{ partial "ui/t-key" (dict "Key" "form.footerNote") }}
         </p>
       </div>
     </div>

@@ -332,6 +332,8 @@ function camxForm() {
     error: false,
     errorMessage: '',
 
+    siteLanguage: document.documentElement.lang || 'en',
+
     // Searchable brand combobox state
     brandQuery: '',
     brandOpen: false,
@@ -352,6 +354,7 @@ function camxForm() {
       customModel: '', // filled when carBrand === 'Other'
       cameraPlacement: 'Front', // default value
       consent: false,
+      language: document.documentElement.lang || 'en',
     },
 
     touched: {
@@ -526,12 +529,14 @@ function camxForm() {
           carYear: this.formData.carYear,
           cameraPlacement: this.formData.cameraPlacement,
           consent: this.formData.consent ? 'Yes' : 'No',
+          language: this.siteLanguage,
         };
 
         // Paste your Google Apps Script Web App URL here.
         // Get it from: Google Sheet → Extensions → Apps Script →
         // Deploy → New deployment → Web app (Execute as: Me, Access: Anyone)
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxr1hDNWN2rzIxrGRkM9v8zK0iPtjG5HEXhEIpsFONSNJMpyYBx7Z4LGy0Pz5pRT4FWNw/exec';
+        const scriptURL =
+          'https://script.google.com/macros/s/AKfycbyQEB8vhHww9C9nIPbgL9HFX-vHwTyNLWOL7c3EPMF4FgTM_SpAVKemTenltDSnbxDzuw/exec';
 
         await fetch(scriptURL, {
           method: 'POST',
