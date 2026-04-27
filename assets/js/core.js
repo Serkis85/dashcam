@@ -531,8 +531,7 @@ function camxForm() {
         // Paste your Google Apps Script Web App URL here.
         // Get it from: Google Sheet → Extensions → Apps Script →
         // Deploy → New deployment → Web app (Execute as: Me, Access: Anyone)
-        const scriptURL =
-          'https://script.google.com/macros/s/AKfycbwpbbEdVwbOMMBjafUd8MmVCKOa5cvKlFyNUDlMrW0Q2a8s1CZ1PDVlvquOhztCpnoGqw/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxr1hDNWN2rzIxrGRkM9v8zK0iPtjG5HEXhEIpsFONSNJMpyYBx7Z4LGy0Pz5pRT4FWNw/exec';
 
         await fetch(scriptURL, {
           method: 'POST',
