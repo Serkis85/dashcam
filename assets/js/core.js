@@ -350,6 +350,7 @@ function camxForm() {
       carYear: '',
       customBrand: '', // filled when carBrand === 'Other'
       customModel: '', // filled when carBrand === 'Other'
+      cameraPlacement: 'Front', // default value
       consent: false,
     },
 
@@ -361,6 +362,7 @@ function camxForm() {
       carBrand: false,
       carModel: false,
       carYear: false,
+      cameraPlacement: false,
       consent: false,
     },
 
@@ -474,6 +476,8 @@ function camxForm() {
           return v.carModel ? '' : 'Please select your car model';
         case 'carYear':
           return v.carYear ? '' : 'Please select the car year';
+        case 'cameraPlacement':
+          return v.cameraPlacement ? '' : 'Please select a camera placement option';
         case 'consent':
           return v.consent ? '' : 'You must agree to continue';
         default:
@@ -520,6 +524,7 @@ function camxForm() {
               ? this.formData.customModel.trim()
               : this.formData.carModel,
           carYear: this.formData.carYear,
+          cameraPlacement: this.formData.cameraPlacement,
           consent: this.formData.consent ? 'Yes' : 'No',
         };
 
@@ -560,6 +565,7 @@ function camxForm() {
         carYear: '',
         customBrand: '',
         customModel: '',
+        cameraPlacement: 'Front',
         consent: false,
       };
       this.brandQuery = '';

@@ -34,6 +34,7 @@ var HEADERS = [
   'Car Brand',
   'Car Model',
   'Car Year',
+  'Camera Placement',
   'Consent',
 ];
 
@@ -68,6 +69,7 @@ function doPost(e) {
       data.carBrand || '',
       data.carModel || '',
       data.carYear || '',
+      data.cameraPlacement || '',
       data.consent || '',
     ]);
 
