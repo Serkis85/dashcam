@@ -215,7 +215,7 @@
                 <div :data-error="isInvalid('phone') ? 'true' : 'false'">
                   <label for="phone" class="block text-sm font-semibold text-slate-700 mb-1.5">
                     {{ partial "ui/t-key" (dict "Key" "form.phone") }}
-                    <span class="text-slate-400 font-normal">(optional)</span>
+                    <span class="text-slate-400 font-normal">{{ partial "ui/t-key" (dict "Key" "form.optional") }}</span>
                   </label>
                   <input
                     type="tel"

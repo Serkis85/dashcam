@@ -4,12 +4,13 @@ menu:
 form:
   heroTitle: 'Finally, a <span class="text-blue-400">Plug & Play</span><br />Dash Camera That Fits<br />Your Car Perfectly'
   title: Plug & Play Dash Cam that fits your car perfectly
-  tagline: Tell us about your car and we'll match you with a dash cam that fits perfectly—seamless, plug & play, and made for your mirror.
+  tagline: Tell us about your car and we'll match you with a dash cam that fits perfectly, seamless, plug & play, and made for your mirror.
   subtitle: Exclusive Offer
   firstName: First Name
   lastName: Last Name
   email: Email
   phone: Phone
+  optional: (optional)
   personalDetails: Personal Details
   carSpecifications: Car Specifications
   car_brand: Car Brand
