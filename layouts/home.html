@@ -1,0 +1,466 @@
+{{ define "body" }}
+  {{/* ── Inline styles for the combobox dropdown ─────────────────────────── */}}
+  <style>
+    [x-cloak] { display: none !important; }
+    .combo-dropdown {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background: #fff;
+      border: 1px solid #d1d5db;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.15);
+      max-height: 13rem;
+      overflow-y: auto;
+    }
+    .combo-option {
+      padding: 0.6rem 1rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: #111827;
+    }
+    .combo-option:hover,
+    .combo-option.active {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+    .combo-option.other-option {
+      border-top: 1px solid #e5e7eb;
+      color: #6b7280;
+      font-style: italic;
+    }
+    .combo-option.other-option:hover {
+      background: #f3f4f6;
+      color: #374151;
+    }
+  </style>
+
+  <main
+    class="min-h-screen flex items-center justify-center relative"
+    style="
+      background-color: #0f172a;
+      background-image: url('/images/Dashcam4k1.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    "
+  >
+    {{/* Dark overlay */}}
+    <div class="absolute inset-0 bg-slate-950/65 pointer-events-none"></div>
+
+    <div class="relative z-10 w-full px-4 py-10 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-xl">
+
+        {{/* ── Campaign header ───────────────────────────────────────────── */}}
+        <div class="text-center mb-8">
+          <p class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-3">
+            Exclusive Offer
+          </p>
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight mb-3">
+            Find the Perfect<br />
+            <span class="text-blue-400">Dashboard Camera</span><br />
+            for Your Car
+          </h1>
+          <p class="text-slate-300 text-sm sm:text-base max-w-sm mx-auto">
+            Fill in your details and we'll match you with the best dashcam solution for your
+            vehicle.
+          </p>
+        </div>
+
+        {{/* ── Form card ─────────────────────────────────────────────────── */}}
+        <div
+          x-data="camxForm()"
+          class="bg-white rounded-2xl shadow-2xl overflow-visible"
+        >
+
+          {{/* Success message */}}
+          <div
+            x-show="submitted"
+            x-cloak
+            class="p-8 text-center"
+          >
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 class="text-xl font-bold text-slate-800 mb-2">Thank you!</h2>
+            <p class="text-slate-600 text-sm">
+              Your details have been submitted. We'll be in touch with a personalised dashcam offer shortly.
+            </p>
+          </div>
+
+          {{/* Error banner */}}
+          <div
+            x-show="error"
+            x-cloak
+            class="mx-6 mt-6 p-4 bg-red-50 border border-red-200 rounded-lg"
+          >
+            <p class="text-red-700 text-sm text-center" x-text="errorMessage"></p>
+          </div>
+
+          {{/* ── Main form ─────────────────────────────────────────────── */}}
+          <form
+            @submit.prevent="submitForm"
+            x-show="!submitted"
+            class="p-6 sm:p-8 space-y-6"
+          >
+
+            {{/* ── Section: Personal Details ─────────────────────────── */}}
+            <div>
+              <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <span class="flex-1 h-px bg-slate-200"></span>
+                Personal Details
+                <span class="flex-1 h-px bg-slate-200"></span>
+              </h2>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                {{/* First Name */}}
+                <div :data-error="isInvalid('firstName') ? 'true' : 'false'">
+                  <label for="firstName" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                    First Name <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    x-model="formData.firstName"
+                    @blur="touch('firstName')"
+                    autocomplete="given-name"
+                    placeholder="e.g. John"
+                    :class="isInvalid('firstName')
+                      ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
+                      : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
+                    class="w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:outline-none transition"
+                  />
+                  <p x-show="isInvalid('firstName')" x-cloak class="mt-1 text-xs text-red-600" x-text="fieldError('firstName')"></p>
+                </div>
+
+                {{/* Last Name */}}
+                <div :data-error="isInvalid('lastName') ? 'true' : 'false'">
+                  <label for="lastName" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                    Last Name <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    x-model="formData.lastName"
+                    @blur="touch('lastName')"
+                    autocomplete="family-name"
+                    placeholder="e.g. Smith"
+                    :class="isInvalid('lastName')
+                      ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
+                      : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
+                    class="w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:outline-none transition"
+                  />
+                  <p x-show="isInvalid('lastName')" x-cloak class="mt-1 text-xs text-red-600" x-text="fieldError('lastName')"></p>
+                </div>
+
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+
+                {{/* Email */}}
+                <div :data-error="isInvalid('email') ? 'true' : 'false'">
+                  <label for="email" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                    Email <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    x-model="formData.email"
+                    @blur="touch('email')"
+                    autocomplete="email"
+                    placeholder="you@example.com"
+                    :class="isInvalid('email')
+                      ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
+                      : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
+                    class="w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:outline-none transition"
+                  />
+                  <p x-show="isInvalid('email')" x-cloak class="mt-1 text-xs text-red-600" x-text="fieldError('email')"></p>
+                </div>
+
+                {{/* Phone (optional) */}}
+                <div :data-error="isInvalid('phone') ? 'true' : 'false'">
+                  <label for="phone" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                    Phone
+                    <span class="text-slate-400 font-normal">(optional)</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    x-model="formData.phone"
+                    @blur="touch('phone')"
+                    autocomplete="tel"
+                    placeholder="+357 99 123456"
+                    :class="isInvalid('phone')
+                      ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
+                      : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
+                    class="w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:outline-none transition"
+                  />
+                  <p x-show="isInvalid('phone')" x-cloak class="mt-1 text-xs text-red-600" x-text="fieldError('phone')"></p>
+                </div>
+
+              </div>
+            </div>
+
+            {{/* ── Section: Car Specifications ───────────────────────── */}}
+            <div>
+              <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <span class="flex-1 h-px bg-slate-200"></span>
+                Car Specifications
+                <span class="flex-1 h-px bg-slate-200"></span>
+              </h2>
+
+              <div class="space-y-4">
+
+                {{/* ── Car Brand – searchable combobox ──────────────── */}}
+                <div
+                  :data-error="isInvalid('carBrand') ? 'true' : 'false'"
+                  class="relative"
+                  x-data
+                  @keydown.escape="brandOpen = false"
+                >
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+                    Car Brand <span class="text-red-500">*</span>
+                  </label>
+
+                  <div class="relative">
+                    <input
+                      type="text"
+                      x-model="brandQuery"
+                      @focus="brandOpen = true"
+                      @input="brandOpen = true; if(formData.carBrand && brandQuery !== formData.carBrand) { formData.carBrand = ''; formData.carModel = ''; modelQuery = ''; }"
+                      @blur="$nextTick(() => { if (!formData.carBrand) brandQuery = ''; brandOpen = false; })"
+                      placeholder="Search car brand…"
+                      autocomplete="off"
+                      :class="isInvalid('carBrand')
+                        ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
+                        : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
+                      class="w-full px-4 py-2.5 pr-10 text-sm border rounded-lg focus:ring-2 focus:outline-none transition"
+                    />
+                    {{/* Clear button */}}
+                    <button
+                      type="button"
+                      x-show="formData.carBrand || brandQuery"
+                      x-cloak
+                      @mousedown.prevent="clearBrand()"
+                      class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      aria-label="Clear brand"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                    {{/* Chevron */}}
+                    <span
+                      x-show="!formData.carBrand && !brandQuery"
+                      class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                  </div>
+
+                  {{/* Brand dropdown */}}
+                  <div
+                    x-show="brandOpen && filteredBrands.length > 0"
+                    x-cloak
+                    class="combo-dropdown"
+                  >
+                    <template x-for="brand in filteredBrands" :key="brand">
+                      <div
+                        @mousedown.prevent="selectBrand(brand)"
+                        :class="{
+                          'active': formData.carBrand === brand,
+                          'other-option': brand === 'Other'
+                        }"
+                        class="combo-option"
+                        x-text="brand === 'Other' ? '✏ Other (type manually)' : brand"
+                      ></div>
+                    </template>
+                  </div>
+
+                  <p x-show="isInvalid('carBrand')" x-cloak class="mt-1 text-xs text-red-600" x-text="fieldError('carBrand')"></p>
+
+                  {{/* Manual brand input when Other is selected */}}
+                  <div x-show="isOtherBrand" x-cloak class="mt-3">
+                    <input
+                      type="text"
+                      x-model="formData.customBrand"
+                      @input="touch('carBrand')"
+                      placeholder="Enter your car brand"
+                      class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                    />
+                  </div>
+                </div>
+
+                {{/* ── Car Model – searchable combobox ──────────────── */}}
+                <div
+                  :data-error="isInvalid('carModel') ? 'true' : 'false'"
+                  class="relative"
+                  x-data
+                  @keydown.escape="modelOpen = false"
+                >
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+                    Car Model <span class="text-red-500">*</span>
+                  </label>
+
+                  {{/* Standard brand: searchable combobox */}}
+                  <div x-show="!isOtherBrand" class="relative">
+                    <input
+                      type="text"
+                      x-model="modelQuery"
+                      @focus="if(formData.carBrand && !isOtherBrand) modelOpen = true"
+                      @input="if(formData.carBrand && !isOtherBrand) { modelOpen = true; if(formData.carModel && modelQuery !== formData.carModel) formData.carModel = ''; }"
+                      @blur="$nextTick(() => { if (!formData.carModel) modelQuery = ''; modelOpen = false; })"
+                      :disabled="!formData.carBrand || isOtherBrand"
+                      :placeholder="formData.carBrand ? 'Search model…' : 'Select a brand first'"
+                      autocomplete="off"
+                      :class="isInvalid('carModel')
+                        ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
+                        : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
+                      class="w-full px-4 py-2.5 pr-10 text-sm border rounded-lg focus:ring-2 focus:outline-none transition disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed"
+                    />
+                    {{/* Clear button */}}
+                    <button
+                      type="button"
+                      x-show="formData.carModel || modelQuery"
+                      x-cloak
+                      @mousedown.prevent="clearModel()"
+                      class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                      aria-label="Clear model"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                    {{/* Chevron */}}
+                    <span
+                      x-show="!formData.carModel && !modelQuery"
+                      class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+
+                    {{/* Model dropdown */}}
+                    <div
+                      x-show="modelOpen && filteredModels.length > 0"
+                      x-cloak
+                      class="combo-dropdown"
+                    >
+                      <template x-for="model in filteredModels" :key="model">
+                        <div
+                          @mousedown.prevent="selectModel(model)"
+                          :class="{ 'active': formData.carModel === model }"
+                          class="combo-option"
+                          x-text="model"
+                        ></div>
+                      </template>
+                    </div>
+                  </div>
+
+                  {{/* Other brand: plain text input */}}
+                  <div x-show="isOtherBrand" x-cloak>
+                    <input
+                      type="text"
+                      x-model="formData.customModel"
+                      @input="touch('carModel')"
+                      placeholder="Enter your car model"
+                      class="w-full px-4 py-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition"
+                    />
+                  </div>
+
+                  <p x-show="isInvalid('carModel')" x-cloak class="mt-1 text-xs text-red-600" x-text="fieldError('carModel')"></p>
+                </div>
+
+                {{/* ── Car Year ──────────────────────────────────────── */}}
+                <div :data-error="isInvalid('carYear') ? 'true' : 'false'">
+                  <label for="carYear" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                    Car Year <span class="text-red-500">*</span>
+                  </label>
+                  <div class="relative">
+                    <select
+                      id="carYear"
+                      x-model="formData.carYear"
+                      @change="touch('carYear')"
+                      :class="isInvalid('carYear')
+                        ? 'border-red-400 focus:ring-red-400 focus:border-red-400'
+                        : 'border-slate-300 focus:ring-blue-500 focus:border-blue-500'"
+                      class="w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:outline-none transition appearance-none bg-white pr-10 text-slate-900"
+                    >
+                      <option value="" disabled selected>Select year</option>
+                      <template x-for="year in carYears" :key="year">
+                        <option :value="year" x-text="year"></option>
+                      </template>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                  <p x-show="isInvalid('carYear')" x-cloak class="mt-1 text-xs text-red-600" x-text="fieldError('carYear')"></p>
+                </div>
+
+              </div>
+            </div>
+
+            {{/* ── Consent ───────────────────────────────────────────── */}}
+            <div :data-error="isInvalid('consent') ? 'true' : 'false'">
+              <label
+                :class="isInvalid('consent') ? 'border-red-400 bg-red-50' : 'border-slate-200 hover:bg-slate-50'"
+                class="flex items-start gap-3 p-4 border-2 rounded-xl cursor-pointer transition"
+              >
+                <input
+                  type="checkbox"
+                  x-model="formData.consent"
+                  @change="touch('consent')"
+                  class="mt-0.5 w-4 h-4 accent-blue-600 shrink-0"
+                />
+                <span class="text-sm text-slate-700 leading-snug">
+                  I agree to receive offers and updates.
+                  <span class="text-red-500">*</span>
+                </span>
+              </label>
+              <p x-show="isInvalid('consent')" x-cloak class="mt-1 text-xs text-red-600" x-text="fieldError('consent')"></p>
+            </div>
+
+            {{/* ── Submit ────────────────────────────────────────────── */}}
+            <button
+              type="submit"
+              :disabled="loading"
+              :class="loading ? 'opacity-60 cursor-not-allowed' : 'hover:bg-blue-700 active:scale-[0.98]'"
+              class="w-full bg-blue-600 text-white font-bold py-3.5 px-6 rounded-xl transition-all transform shadow-lg text-sm tracking-wide"
+            >
+              <span x-show="!loading" class="flex items-center justify-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+                Get My Dashcam Offer
+              </span>
+              <span x-show="loading" x-cloak class="flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12a8 8 0 018-8v8H4z" />
+                </svg>
+                Submitting…
+              </span>
+            </button>
+
+          </form>
+        </div>
+
+        {{/* Footer note */}}
+        <p class="text-center text-xs text-slate-400 mt-6">
+          Your information is kept private and will only be used to send you relevant offers.
+        </p>
+
+      </div>
+    </div>
+  </main>
+{{ end }}

@@ -1,0 +1,51 @@
+languageCode: en-us
+title: 'CamX – Find the Perfect Dashboard Camera for Your Car'
+description: 'Get a personalised dashboard camera offer for your vehicle. Fill in your details and we will match you with the best dashcam solution.'
+disableKinds: ['taxonomy']
+
+module:
+  hugoVersion:
+    extended: false
+    min: 0.159.0
+
+build:
+  buildStats:
+    enable: true
+  cachebusters:
+    - source: layouts/.*
+      target: css
+    - source: assets/.*\.(js|ts|jsx|tsx)
+      target: js
+    - source: assets/.*\.(.*)$
+      target: $1
+
+defaultContentLanguage: en
+defaultContentLanguageInSubdir: false
+enableRobotsTXT: true
+
+languages:
+  en:
+    disabled: false
+    languageCode: en-US
+    languageDirection: ltr
+    languageName: English
+    weight: 1
+  el:
+    disabled: false
+    languageCode: el-GR
+    languageDirection: ltr
+    languageName: Greek
+    weight: 2
+
+outputFormats:
+  llms:
+    mediaType: text/plain
+    baseName: llms
+    isPlainText: true
+    notAlternative: true
+
+outputs:
+  home:
+    - html
+    - rss
+    - llms

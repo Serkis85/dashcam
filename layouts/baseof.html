@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="{{ .Site.Language.Lang }}">
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      {{ block "title" . }}
+        {{ if .Title }}
+          {{ .Title }}
+        {{ else }}
+          {{ .Site.Title }}
+        {{ end }}
+      {{ end }}
+    </title>
+    {{ $desc := .Description | default (.Summary | plainify | truncate 160) | default .Site.Params.description }}
+    {{ with $desc }}
+      <meta name="description" content="{{ . }}" />
+      <meta property="og:description" content="{{ . }}" />
+    {{ end }}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="canonical" href="{{ .Permalink }}" />
+
+    {{ if and .IsPage (eq .Section "articles") }}
+      <meta property="og:type" content="article" />
+    {{ else }}
+      <meta property="og:type" content="website" />
+    {{ end }}
+    <meta property="og:url" content="{{ .Permalink }}" />
+    {{ with .Params.image }}
+      <meta property="og:image" content="{{ . | absURL }}" />
+      <meta property="og:image:alt" content="{{ $.Title | default $.Site.Title }}" />
+    {{ end }}
+
+    {{ if .Title }}
+      <meta property="og:title" content="{{ .Title }}" />
+    {{ else }}
+      <meta property="og:title" content="{{ .Site.Title }}" />
+    {{ end }}
+    <meta property="og:site_name" content="{{ .Site.Title }}" />
+    <meta
+      property="og:locale"
+      content="{{ replace (.Site.Language.LanguageCode | default "en_US") "-" "_" }}"
+    />
+
+    {{/* Twitter / X Card */}}
+    <meta
+      name="twitter:card"
+      content="{{ if .Params.image }}
+        summary_large_image
+      {{ else }}
+        summary
+      {{ end }}"
+    />
+    <meta
+      name="twitter:title"
+      content="{{ if .Title }}
+        {{ .Title }}
+      {{ else }}
+        {{ .Site.Title }}
+      {{ end }}"
+    />
+    {{ with $desc }}<meta name="twitter:description" content="{{ . }}" />{{ end }}
+    {{ with .Params.image }}<meta name="twitter:image" content="{{ . | absURL }}" />{{ end }}
+
+
+    <link rel="icon" type="image/png" href="/images/favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon/favicon.svg" />
+    <link rel="shortcut icon" href="/images/favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/images/favicon/site.webmanifest" />
+
+    {{- if .Params.noindex -}}
+      <meta name="robots" content="noindex" />
+    {{- end -}}
+
+    {{/* Tailwind CSS */}}
+    {{ $t := debug.Timer "tailwindcss" }}
+    {{ with resources.Get "css/tailwind.css" }}
+      {{ $opts := dict
+        "inlineImports" true
+        "optimize" (not hugo.IsDevelopment)
+      }}
+      {{ with . | css.TailwindCSS $opts }}
+        {{ if hugo.IsDevelopment }}
+          <link rel="stylesheet" href="{{ .RelPermalink }}" />
+        {{ else }}
+          {{ with . | minify | fingerprint }}
+            <link
+              rel="stylesheet"
+              href="{{ .RelPermalink }}"
+              integrity="{{ .Data.Integrity }}"
+              crossorigin="anonymous"
+            />
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    {{ $t.Stop }}
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
+
+    {{/* RSS / Atom feed autodiscovery */}}
+    {{ range .AlternativeOutputFormats }}
+      <link
+        rel="{{ .Rel }}"
+        type="{{ .MediaType.Type }}"
+        href="{{ .Permalink | safeURL }}"
+        title="{{ $.Site.Title }}"
+      />
+    {{ end }}
+
+    {{/* Global structured data: Organization + WebSite */}}
+    {{ $logoURL := "images/favicon/favicon-96x96.png" | absURL }}
+    {{ $orgSchema := dict "@type" "Organization" "@id" (print .Site.BaseURL "#organization") "name" .Site.Title "url" .Site.BaseURL "logo" (dict "@type" "ImageObject" "url" $logoURL) }}
+    {{ $siteSchema := dict "@type" "WebSite" "@id" (print .Site.BaseURL "#website") "url" .Site.BaseURL "name" .Site.Title "publisher" (dict "@id" (print .Site.BaseURL "#organization")) }}
+    {{ $globalSchema := dict "@context" "https://schema.org" "@graph" (slice $orgSchema $siteSchema) }}
+    {{ printf "<script type=\"application/ld+json\">%s</script>" ($globalSchema | jsonify) | safeHTML }}
+
+    {{ block "header-links" . }}{{ end }}
+  </head>
+  <body>
+    {{ block "body" . }}{{ end }}
+
+    {{/* Load main scripts here. */}}
+    {{ partial "function/script-loader.html" (dict
+      "libs" (slice "js/core.js")
+      "output" "js/output.js"
+      )
+    }}
+  </body>
+</html>

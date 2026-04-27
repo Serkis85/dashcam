@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Quick Setup Script for Cruise Giveaway Landing Page
+# This script helps you finalize the Google Sheets integration
+
+echo "======================================"
+echo "Cruise Giveaway Landing Page - Setup"
+echo "======================================"
+echo ""
+echo "Your landing page has been created! Here's what you need to do next:"
+echo ""
+echo "STEP 1: Set up Google Sheets Integration"
+echo "----------------------------------------"
+echo "1. Open your Google Sheet:"
+echo "   https://docs.google.com/spreadsheets/d/1q6GWNkeYWxLbJMURxEHV9MvrjcBn8OJ3TwotrGfYRec/edit"
+echo ""
+echo "2. Go to Extensions → Apps Script"
+echo ""
+echo "3. Copy the code from GOOGLE_SHEETS_SETUP.md (Step 1)"
+echo ""
+echo "4. Deploy as Web App (anyone can access)"
+echo ""
+echo "5. Copy the Web App URL"
+echo ""
+echo "6. Update assets/js/core.js:"
+echo "   Replace 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL' with your actual URL"
+echo ""
+echo "STEP 2: Build and Deploy"
+echo "------------------------"
+echo "Run: make build"
+echo ""
+echo "STEP 3: Test the Form"
+echo "---------------------"
+echo "1. Open your site"
+echo "2. Fill out the form"
+echo "3. Check if data appears in Google Sheets"
+echo ""
+echo "For detailed instructions, see: GOOGLE_SHEETS_SETUP.md"
+echo "======================================"
+echo ""
+
+# Make this script executable
+chmod +x "$0"

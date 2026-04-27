@@ -1,0 +1,21 @@
+{{- $libs := .libs }}
+{{- $output := default "js/output.js" .output }}
+{{- $resources := slice }}
+
+{{- range $libs }}
+  {{- $res := resources.Get . }}
+  {{- $resources = $resources | append $res }}
+{{- end }}
+
+{{- $js := $resources | resources.Concat $output }}
+
+{{- if hugo.IsDevelopment }}
+  <script src="{{ $js.Permalink }}"></script>
+{{- else }}
+  {{- $js = $js | resources.Minify | resources.Fingerprint }}
+  <script
+    src="{{ $js.Permalink }}"
+    integrity="{{ $js.Data.Integrity }}"
+    crossorigin="anonymous"
+  ></script>
+{{- end }}

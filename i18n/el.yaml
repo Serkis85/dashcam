@@ -1,0 +1,8 @@
+# Note: pluralization keys like "description" or "one" will convert your object into plural translation and other keys will stop working.
+# Don't use those keys unless you are working on pluralization of a string.
+menu:
+  homepage: Αρχική σελίδα
+  about: Σχετικά με εμάς
+
+aboutUs:
+  introduction: Η πρώτη γραμμή του κειμένου Lorem Ipsum προέρχεται από την παράγραφο 32 και συγκεκριμένα από το απόσπασμα neque porro quisquam est, qui dolorem ipsum, quia dolor sit, amet, consectetur, adipisci velit που σημαίνει "κι έπειτα ούτε υπάρχει κανείς που να αγαπά τον πόνο (οδύνη) αυτόν καθ' εαυτόν, να τον αποζητά και να θέλει να τον νιώσει, (απλά και μόνο) επειδή είναι πόνος...". Η φυσική πηγή του κειμένου Lorem Ipsum ίσως είναι η έκδοση το 1914 της πραγματείας De Finibus από τις Εκδόσεις Loeb Classical Library, όπου το Λατινικό κείμενο τελειώνει τη σελίδα 34 με "neque porro quisquam est, qui do-" (στην αντικριστή σελίδα η αγγλική μετάφραση) και αρχίζει τη σελίδα 36 με "lorem ipsum (κτλ)…", που υπονοεί ότι το υπόλοιπο εκείνης της σελίδας αναμείχθηκε για να αποτελέσει το πλασματικό κείμενο που βλέπουμε σήμερα. (τα τμήματα που χρησιμοποιήθηκαν είναι χαρακτηρισμένα με έντονη γραφή, ενώ σε κάποιες περιπτώσεις προστίθενται γράμματα και συλλαβές ή λέξεις κολοβώνονται κατά ένα μικρότερο ή μεγαλύτερο μέρος τους).

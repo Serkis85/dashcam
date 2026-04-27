@@ -1,0 +1,12 @@
+# {{ .Site.Title }}
+
+> A Hugo starter template by Fullsolid — a clean, production-ready foundation for building fast, modern websites with Hugo and Tailwind CSS.
+
+## Key pages
+
+- [Home]({{ .Site.BaseURL }})
+- [About]({{ absLangURL "about" }})
+
+## Contact
+
+- Website: https://www.fullsolid.com

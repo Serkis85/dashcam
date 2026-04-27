@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter', 'sans-serif';
+  --font-display: 'Roboto Condensed', 'sans-serif';
+}
+
+body {
+  @apply antialiased;
+}
+
+/* Alpine.js cloak - hide elements until Alpine.js is loaded */
+[x-cloak] {
+  display: none !important;
+}
+
+/* Smooth transitions for form elements */
+input[type='text'],
+input[type='email'],
+input[type='tel'],
+input[type='number'] {
+  @apply transition-all duration-200;
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+input[type='tel']:focus,
+input[type='number']:focus {
+  @apply shadow-md;
+}
+
+/* Custom checkbox and radio styles */
+input[type='radio']:checked,
+input[type='checkbox']:checked {
+  @apply shadow-sm;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}

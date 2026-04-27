@@ -1,0 +1,36 @@
+{
+  "name": "Go",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "IMAGE": "mcr.microsoft.com/devcontainers/go:1.25"
+    }
+  },
+  "runArgs": [
+    "--name",
+    "camx"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "EditorConfig.EditorConfig",
+        "eamodio.gitlens",
+        "tombonnike.vscode-status-bar-format-toggle",
+        "streetsidesoftware.code-spell-checker",
+        "wmaurer.change-case",
+        "budparr.language-hugo-vscode",
+        "rusnasonov.vscode-hugo",
+        "eliostruyf.vscode-front-matter",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "albymor.increment-selection"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    }
+  },
+  "postStartCommand": "npm install"
+}
